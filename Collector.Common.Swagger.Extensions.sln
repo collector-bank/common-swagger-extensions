@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collector.Common.Swagger.Extensions", "src\Collector.Common.Swagger.Extensions\Collector.Common.Swagger.Extensions.csproj", "{286ECF53-A374-4DDD-8D63-1577144029F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Collector.Common.Swagger.Extensions", "src\Collector.Common.Swagger.Extensions\Collector.Common.Swagger.Extensions.csproj", "{CC62852C-6E47-4EAA-BA17-2ACE01120C86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{286ECF53-A374-4DDD-8D63-1577144029F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{286ECF53-A374-4DDD-8D63-1577144029F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{286ECF53-A374-4DDD-8D63-1577144029F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{286ECF53-A374-4DDD-8D63-1577144029F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC62852C-6E47-4EAA-BA17-2ACE01120C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC62852C-6E47-4EAA-BA17-2ACE01120C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC62852C-6E47-4EAA-BA17-2ACE01120C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC62852C-6E47-4EAA-BA17-2ACE01120C86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
