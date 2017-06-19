@@ -1,0 +1,22 @@
+﻿@charset "UTF-8";
+ 
+.swagger-section #header {
+    background-color: #582f87;
+}
+ 
+.swagger-section #header #logo:after {
+    line-height: 1.5em;
+    content: 'Collector Bank';
+}
+ 
+.swagger-section #header #logo .logo__img {
+    display: none;
+}
+ 
+.swagger-section #header #logo .logo__title {
+    display: none;
+}
+ 
+#select_document {
+    background-color: #C30074 !important;
+}
