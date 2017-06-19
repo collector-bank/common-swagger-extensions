@@ -10,6 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/collector-bank/common-swagger-extensions</RepositoryUrl>
     <PackageProjectUrl>https://github.com/collector-bank/common-swagger-extensions</PackageProjectUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

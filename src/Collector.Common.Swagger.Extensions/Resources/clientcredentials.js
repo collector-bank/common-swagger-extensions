@@ -17,4 +17,6 @@
     domCache.apiKeyInput.change(addApiKeyAuthorization);
     domCache.apiKeyInput.attr('placeholder', 'Put bearer token here');
     domCache.exploreButton.hide();
+
+    window.swaggerUi.api.clientAuthorizations.remove("api_key");
 })();
