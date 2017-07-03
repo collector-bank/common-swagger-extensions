@@ -28,17 +28,29 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// Returns a Collector Bank favicon
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/favicon.ico")]
         [HttpGet("/swagger/images/favicon-32x32.png")]
         [HttpGet("/swagger/images/favicon-16x16.png")]
-        [HttpGet("/swagger/images/logo_small.png")]
         public IActionResult GetFavicon()
+        {
+            return GetImage("Resources.favicon.png");
+        }
+        /// <summary>
+        /// Returns a Collector Bank Logo
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/swagger/images/logo_small.png")]
+        public IActionResult GetLogo()
+        {
+            return GetImage("Resources.collector-bank250x26.png");
+        }
+
+        private IActionResult GetImage(string fileName)
         {
             var assembly = typeof(ExtensionController).GetTypeInfo().Assembly;
 
-            var streamData = assembly.ReadEmbeddedFileAsStream("Resources.favicon.ico");
-            var mime = Request.Path.HasValue && Request.Path.Value.EndsWith(".ico") ? "images/x-icon" : "images/apng";
-            return File(streamData, mime);
+            var streamData = assembly.ReadEmbeddedFileAsStream(fileName);
+            return File(streamData, "images/apng");
+            
         }
     }
 }

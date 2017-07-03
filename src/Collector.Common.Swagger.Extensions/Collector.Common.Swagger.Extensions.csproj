@@ -19,8 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\Shared\collector-bank250x26.png" Link="Resources\collector-bank250x26.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Shared\favicon.png" Link="Resources\favicon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="..\Shared\collectortheme.css" Link="Resources\collectortheme.css" />
-    <EmbeddedResource Include="..\Shared\favicon.ico" Link="Resources\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
