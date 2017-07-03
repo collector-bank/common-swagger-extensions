@@ -20,9 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\Shared\collectortheme.css" Link="Resources\collectortheme.css" />
+    <EmbeddedResource Include="..\Shared\favicon.ico" Link="Resources\favicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Resources\clientcredentials.js" />
-    <EmbeddedResource Include="Resources\collectortheme.css" />
-    <EmbeddedResource Include="Resources\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
