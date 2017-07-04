@@ -22,18 +22,15 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
     /// </summary>
     public static class SwaggerConfigurationExtensions
     {
-        private const string ActionPath = Constants.Route;
-        private const string Css = "Resources.collectortheme.css";
-        private const string Js = "Resources.clientcredentials.js";
         /// <summary>
         /// Use this to enable the collector style-sheet
         /// </summary>
         /// <param name="swaggerUiOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableCollectorTheme(this SwaggerUIOptions swaggerUiOptions)
+        public static void InjectCollectorTheme(this SwaggerUIOptions swaggerUiOptions)
         {
-            swaggerUiOptions.InjectStylesheet(ActionPath + Css);
+            swaggerUiOptions.InjectStylesheet(Constants.Route + Constants.Css);
         }
 
         /// <summary>
@@ -42,9 +39,9 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <param name="swaggerUiOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableBearerToken(this SwaggerUIOptions swaggerUiOptions)
+        public static void InjectBearerTokenJs(this SwaggerUIOptions swaggerUiOptions)
         {
-            swaggerUiOptions.InjectOnCompleteJavaScript(ActionPath + Js);
+            swaggerUiOptions.InjectOnCompleteJavaScript(Constants.Route + Constants.Js);
         }
 
         /// <summary>
@@ -59,6 +56,12 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
             swaggerGenOptions.DocumentFilter<SwaggerAuthorizationFilter>();
         }
 
+        /// <summary>
+        /// Adds the Swagger Gen and also enables Bearer Token security definition with authorization filter
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="setupAction"></param>
+        /// <returns></returns>
         public static IServiceCollection AddSwaggerGenWithBearerToken(this IServiceCollection services, Action<SwaggerGenOptions> setupAction)
         {
             if (services.All(x => x.ImplementationType != typeof(IHttpContextAccessor)))
@@ -73,6 +76,12 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
             return services;
         }
 
+        /// <summary>
+        /// Inject Collector Theme CSS and Bearer Token api_key functionality
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="setupAction"></param>
+        /// <returns></returns>
         public static IApplicationBuilder UseCollectorSwaggerUI(
             this IApplicationBuilder app,
             Action<SwaggerUIOptions> setupAction)
@@ -81,7 +90,8 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
             app.UseSwaggerUI(options =>
             {
                 setupAction.Invoke(options);
-                options.EnableCollectorTheme();
+                options.InjectCollectorTheme();
+                options.InjectBearerTokenJs();
             });
 
             return app;
