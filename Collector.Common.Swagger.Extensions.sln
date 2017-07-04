@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collector.Common.Swagger.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Collector.Common.Swagger.AspNetCore.Extensions", "src\Collector.Common.Swagger.AspNetCore.Extensions\Collector.Common.Swagger.AspNetCore.Extensions.csproj", "{1B11E08C-4EB0-4DD7-9B56-424FBF5AD400}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{1A85500E-CEE2-4CD4-A641-0131E9E08F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleSwashbuckleAspNetCore", "examples\ExampleSwashbuckleAspNetCore\ExampleSwashbuckleAspNetCore.csproj", "{4880881A-B274-4A70-AD54-6FDABC63355B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{1B11E08C-4EB0-4DD7-9B56-424FBF5AD400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B11E08C-4EB0-4DD7-9B56-424FBF5AD400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B11E08C-4EB0-4DD7-9B56-424FBF5AD400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4880881A-B274-4A70-AD54-6FDABC63355B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4880881A-B274-4A70-AD54-6FDABC63355B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4880881A-B274-4A70-AD54-6FDABC63355B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4880881A-B274-4A70-AD54-6FDABC63355B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4880881A-B274-4A70-AD54-6FDABC63355B} = {1A85500E-CEE2-4CD4-A641-0131E9E08F1F}
 	EndGlobalSection
 EndGlobal
