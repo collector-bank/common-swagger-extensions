@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Collector.Common.Swagger.AspNetCore.Extensions.Security
+namespace ExampleSwashbuckleAspNetCore
 {
     /// <summary>
     /// Copied from Cerebro project.

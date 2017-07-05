@@ -1,6 +1,7 @@
 ﻿using System;
 using Collector.Common.Swagger.AspNetCore.Extensions;
 using Collector.Common.Swagger.AspNetCore.Extensions.Security;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +37,7 @@ namespace ExampleSwashbuckleAspNetCore
                     new CamelCasePropertyNamesContractResolver());
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("example", policy => policy.AddRequirements(new HasScopeRequirement("examplescope", "oauthissuer")));
+                options.AddPolicy("example", policy => policy.AddRequirements(new DenyAnonymousAuthorizationRequirement()));
             });
 
 

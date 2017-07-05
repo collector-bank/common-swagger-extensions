@@ -12,4 +12,5 @@
         }
         routerLoad.call(swagger);
     };
+    window.document.getElementById("logo").setAttribute("href", "#");
 })(window.swaggerUi);
