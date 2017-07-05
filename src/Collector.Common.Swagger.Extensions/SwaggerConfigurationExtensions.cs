@@ -7,6 +7,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Web.Http;
+
 namespace Collector.Common.Swagger.Extensions
 {
     using Swashbuckle.Application;
@@ -16,6 +19,27 @@ namespace Collector.Common.Swagger.Extensions
     /// </summary>
     public static class SwaggerConfigurationExtensions
     {
+        public static SwaggerEnabledConfiguration EnableSwaggerUiWithCollectorTheme(this SwaggerEnabledConfiguration configuration, Action<SwaggerUiConfig> configure = null)
+        {
+            configuration.EnableSwaggerUi(config =>
+            {
+                configure?.Invoke(config);
+                config.EnableCollectorTheme();
+            });
+            return configuration;
+        }
+
+        public static SwaggerEnabledConfiguration EnableSwaggerUiWithCollectorTheme(this SwaggerEnabledConfiguration configuration, string routeTemplate, Action<SwaggerUiConfig> configure = null)
+        {
+            configuration.EnableSwaggerUi(routeTemplate, config =>
+            {
+                configure?.Invoke(config);
+                config.EnableCollectorTheme();
+            });
+            return configuration;
+        }
+
+
         /// <summary>
         /// Use this to enable the collector style-sheet
         /// </summary>
