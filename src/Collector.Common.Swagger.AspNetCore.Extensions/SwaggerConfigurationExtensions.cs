@@ -9,6 +9,7 @@
 
 using System;
 using System.Linq;
+using Collector.Common.Swagger.AspNetCore.Extensions.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -82,7 +83,7 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <param name="app"></param>
         /// <param name="setupAction"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseCollectorSwaggerUI(
+        public static IApplicationBuilder UseSwaggerUIWithCollectorTheme(
             this IApplicationBuilder app,
             Action<SwaggerUIOptions> setupAction)
         {

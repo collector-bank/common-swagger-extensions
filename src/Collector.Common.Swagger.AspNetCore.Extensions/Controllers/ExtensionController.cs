@@ -1,13 +1,14 @@
 ﻿using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
-namespace Collector.Common.Swagger.AspNetCore.Extensions
+namespace Collector.Common.Swagger.AspNetCore.Extensions.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ExtensionController : Controller
     {
         /// <summary>
-        /// Returns as embedded resources as file content
+        /// Returns a embedded resources as file content
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -15,7 +16,15 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         public IActionResult GetEmbeddedResource(string path)
         {
             var assembly = typeof(ExtensionController).GetTypeInfo().Assembly;
-            var contentType = path.EndsWith(".js") ? "application/javascript" : "text/css";
+            string contentType;
+
+            var mapper = new FileExtensionContentTypeProvider();
+            if (!mapper.TryGetContentType(path, out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            // do not dispose this stream, otherwise the return File() method will fail
             var streamData = assembly.ReadEmbeddedFileAsStream(path);
             if (streamData != null)
             {
@@ -25,7 +34,7 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         }
 
         /// <summary>
-        /// Returns a Collector Bank favicon
+        /// Returns a Collector Bank favicon (.png)
         /// </summary>
         /// <returns></returns>
         [HttpGet("/swagger/images/favicon-32x32.png")]
@@ -34,6 +43,7 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         {
             return GetImage("Resources.favicon.png");
         }
+
         /// <summary>
         /// Returns a Collector Bank Logo
         /// </summary>
@@ -48,9 +58,9 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         {
             var assembly = typeof(ExtensionController).GetTypeInfo().Assembly;
 
+            // do not dispose this stream, otherwise the return File() method will fail
             var streamData = assembly.ReadEmbeddedFileAsStream(fileName);
             return File(streamData, "images/apng");
-            
         }
     }
 }

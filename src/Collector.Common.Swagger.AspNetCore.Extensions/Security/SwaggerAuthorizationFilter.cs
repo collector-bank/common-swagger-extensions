@@ -1,17 +1,18 @@
 ﻿/*
  https://github.com/jenyayel/SwaggerSecurityTrimming
  */
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Collector.Common.Swagger.AspNetCore.Extensions
+namespace Collector.Common.Swagger.AspNetCore.Extensions.Security
 {
     public class SwaggerAuthorizationFilter : IDocumentFilter
     {

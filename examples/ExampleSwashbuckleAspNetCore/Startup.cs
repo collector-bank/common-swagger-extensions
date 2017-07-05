@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Collector.Common.Swagger.AspNetCore.Extensions;
+using Collector.Common.Swagger.AspNetCore.Extensions.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ExampleSwashbuckleAspNetCore
@@ -31,7 +30,15 @@ namespace ExampleSwashbuckleAspNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()))
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver());
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("example", policy => policy.AddRequirements(new HasScopeRequirement("examplescope", "oauthissuer")));
+            });
+
 
             services.AddSwaggerGenWithBearerToken(options =>
             {
@@ -39,7 +46,7 @@ namespace ExampleSwashbuckleAspNetCore
                 {
                     Version = "v1",
                     Title = "Swagger Extensions Example",
-                    Description = "",
+                    Description = "#Markdown enabled description field!" + Environment.NewLine + "* Write your description here",
                     TermsOfService = "None"
                 });
                 options.DescribeAllEnumsAsStrings();
@@ -53,10 +60,10 @@ namespace ExampleSwashbuckleAspNetCore
             loggerFactory.AddDebug();
 
             app.UseMvc();
-
-            app.UseCollectorSwaggerUI(options =>
+            app.UseSwagger();
+            app.UseSwaggerUIWithCollectorTheme(options =>
             {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Api v1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Example Api v1");
             });
         }
     }

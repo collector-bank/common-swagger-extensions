@@ -1,6 +1,6 @@
 ﻿using Swashbuckle.AspNetCore.Swagger;
 
-namespace Collector.Common.Swagger.AspNetCore.Extensions
+namespace Collector.Common.Swagger.AspNetCore.Extensions.Security
 {
     public class BaererTokenScheme : SecurityScheme
     {
