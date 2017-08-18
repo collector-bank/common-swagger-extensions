@@ -65,7 +65,7 @@ namespace Collector.Common.Swagger.Extensions
         }
 
         /// <summary>
-        /// Use To filter documents depending on auth.
+        /// Use To filter documents(Endpoints) depending on auth(Authorized/Unauthorized/Scope claim ... etc).
         /// </summary>
         /// <param name="swaggerDocsConfig">
         /// The swagger document config
