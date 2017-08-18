@@ -2,11 +2,11 @@
 
 namespace Collector.Common.Swagger.Extensions.Security
 {
-    public class BaererTokenScheme : SecurityScheme
+    public class BearerTokenScheme : SecurityScheme
     {
-        public BaererTokenScheme()
+        public BearerTokenScheme()
         {
-            description = "Baerer Token";
+            description = "Bearer Token";
             type = "apiKey";
             vendorExtensions.Add("in", "header");
             vendorExtensions.Add("name", "Authorization");

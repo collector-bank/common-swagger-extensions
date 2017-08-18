@@ -84,7 +84,7 @@ namespace Collector.Common.Swagger.Extensions
         /// </param>
         public static void EnableBearerTokenAuthorization(this SwaggerGeneratorOptions swaggerGenOptions)
         {
-            swaggerGenOptions.SecurityDefinitions.Add("api_key", new BaererTokenScheme());
+            swaggerGenOptions.SecurityDefinitions.Add("api_key", new BearerTokenScheme());
         }
     }
 }
