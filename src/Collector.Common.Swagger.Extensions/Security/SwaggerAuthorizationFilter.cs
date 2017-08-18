@@ -4,7 +4,7 @@ using Swashbuckle.Swagger;
 
 namespace Collector.Common.Swagger.Extensions.Security
 {
-    public partial class SwaggerAuthorizationFilter : IDocumentFilter
+    public class SwaggerAuthorizationFilter : IDocumentFilter
     {
         public static SwaggerAuthorizationFilter CreateWithAuthorizationFilter(Func<ApiDescription, bool> apiFilter) =>
             new SwaggerAuthorizationFilter(apiFilter);
@@ -16,19 +16,16 @@ namespace Collector.Common.Swagger.Extensions.Security
         public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
         {
             var descriptions = apiExplorer.ApiDescriptions;
-            //apiExplorer.ApiDescriptions[0].
             foreach (var description in descriptions)
             {
-                // check if this action should be visible
                 var notShowen = _showAction?.Invoke(description) ?? false;
 
                 if (!notShowen)
-                    continue; // user passed all permissions checks
+                    continue;
 
                 var route = "/" + description.Route.RouteTemplate.TrimEnd('/');
                 var path = swaggerDoc.paths[route];
 
-                // remove method or entire path (if there are no more methods in this path)
                 switch (description.HttpMethod.Method)
                 {
                     case "DELETE": path.delete = null; break;
