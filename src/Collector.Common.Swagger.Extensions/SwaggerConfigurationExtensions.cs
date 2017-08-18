@@ -9,11 +9,14 @@
 
 using System;
 using System.Web.Http;
+using System.Web.Http.Description;
+using Collector.Common.Swagger.Extensions.Security;
+using Swashbuckle.Swagger;
 
 namespace Collector.Common.Swagger.Extensions
 {
     using Swashbuckle.Application;
-    
+
     /// <summary>
     /// The collector swagger configuration extensions.
     /// </summary>
@@ -39,7 +42,6 @@ namespace Collector.Common.Swagger.Extensions
             return configuration;
         }
 
-
         /// <summary>
         /// Use this to enable the collector style-sheet
         /// </summary>
@@ -61,6 +63,28 @@ namespace Collector.Common.Swagger.Extensions
         {
             swaggerUiConfig.InjectJavaScript(typeof(SwaggerConfigurationExtensions).Assembly, "Collector.Common.Swagger.Extensions.Resources.clientcredentials.js");
         }
-    }
 
+        /// <summary>
+        /// Use To filter documents(Endpoints) depending on auth(Authorized/Unauthorized/Scope claim ... etc).
+        /// </summary>
+        /// <param name="swaggerDocsConfig">
+        /// The swagger document config
+        /// </param>
+        /// <param name="apiFilter">
+        /// Filter action
+        /// </param>
+        public static void EnableAuthorizationFilter(this SwaggerDocsConfig swaggerDocsConfig, Func<ApiDescription, bool> apiFilter) =>
+            swaggerDocsConfig.DocumentFilter(() => SwaggerAuthorizationFilter.CreateWithAuthorizationFilter(apiFilter));
+
+        /// <summary>
+        /// Use this to enable bearer token in user interface.
+        /// </summary>
+        /// <param name="swaggerGenOptions">
+        /// The swagger User Interface Config
+        /// </param>
+        public static void EnableBearerTokenAuthorization(this SwaggerGeneratorOptions swaggerGenOptions)
+        {
+            swaggerGenOptions.SecurityDefinitions.Add("api_key", new BearerTokenScheme());
+        }
+    }
 }

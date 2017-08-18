@@ -53,7 +53,7 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// </param>
         public static void EnableBearerTokenAuthorization(this SwaggerGenOptions swaggerGenOptions)
         {
-            swaggerGenOptions.AddSecurityDefinition("api_key", new BaererTokenScheme());
+            swaggerGenOptions.AddSecurityDefinition("api_key", new BearerTokenScheme());
             swaggerGenOptions.DocumentFilter<SwaggerAuthorizationFilter>();
         }
 
@@ -87,7 +87,6 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
             this IApplicationBuilder app,
             Action<SwaggerUIOptions> setupAction)
         {
-
             app.UseSwaggerUI(options =>
             {
                 setupAction.Invoke(options);
@@ -97,6 +96,5 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
 
             return app;
         }
-
     }
 }

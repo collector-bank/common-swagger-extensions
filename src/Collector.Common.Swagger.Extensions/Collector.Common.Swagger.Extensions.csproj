@@ -4,13 +4,13 @@
     <TargetFramework>net452</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Company>Collector Bank AB</Company>
-    <Authors>Team Heimdal</Authors>
+    <Authors>Team Heimdal, Felix Svensson</Authors>
     <Product />
     <Description>Extensions for Swagger</Description>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/collector-bank/common-swagger-extensions</RepositoryUrl>
     <PackageProjectUrl>https://github.com/collector-bank/common-swagger-extensions</PackageProjectUrl>
-    <Version>1.0.2</Version>
+    <Version>2.0.0</Version>
     <PackageIconUrl>https://raw.githubusercontent.com/collector-bank/common-swagger-extensions/master/icon.png</PackageIconUrl>
   </PropertyGroup>
 
