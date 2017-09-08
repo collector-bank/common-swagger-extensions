@@ -48,10 +48,8 @@ namespace Collector.Common.Swagger.Extensions
         /// <param name="swaggerUiConfig">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableCollectorTheme(this SwaggerUiConfig swaggerUiConfig)
-        {
+        public static void EnableCollectorTheme(this SwaggerUiConfig swaggerUiConfig) => 
             swaggerUiConfig.InjectStylesheet(typeof(SwaggerConfigurationExtensions).Assembly, "Collector.Common.Swagger.Extensions.Resources.collectortheme.css");
-        }
 
         /// <summary>
         /// Use this to enable bearer token in user interface.
@@ -59,10 +57,8 @@ namespace Collector.Common.Swagger.Extensions
         /// <param name="swaggerUiConfig">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableBearerToken(this SwaggerUiConfig swaggerUiConfig)
-        {
+        public static void EnableBearerToken(this SwaggerUiConfig swaggerUiConfig) => 
             swaggerUiConfig.InjectJavaScript(typeof(SwaggerConfigurationExtensions).Assembly, "Collector.Common.Swagger.Extensions.Resources.clientcredentials.js");
-        }
 
         /// <summary>
         /// Use To filter documents(Endpoints) depending on auth(Authorized/Unauthorized/Scope claim ... etc).
@@ -82,9 +78,7 @@ namespace Collector.Common.Swagger.Extensions
         /// <param name="swaggerGenOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableBearerTokenAuthorization(this SwaggerGeneratorOptions swaggerGenOptions)
-        {
+        public static void EnableBearerTokenAuthorization(this SwaggerGeneratorOptions swaggerGenOptions) =>
             swaggerGenOptions.SecurityDefinitions.Add("api_key", new BearerTokenScheme());
-        }
     }
 }
