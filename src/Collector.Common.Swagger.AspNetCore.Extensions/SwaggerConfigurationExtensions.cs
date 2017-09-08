@@ -29,10 +29,8 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <param name="swaggerUiOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void InjectCollectorTheme(this SwaggerUIOptions swaggerUiOptions)
-        {
+        public static void InjectCollectorTheme(this SwaggerUIOptions swaggerUiOptions) =>
             swaggerUiOptions.InjectStylesheet(Constants.Route + Constants.Css);
-        }
 
         /// <summary>
         /// Use this to enable bearer token in user interface.
@@ -40,10 +38,8 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <param name="swaggerUiOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void InjectBearerTokenJs(this SwaggerUIOptions swaggerUiOptions)
-        {
+        public static void InjectBearerTokenJs(this SwaggerUIOptions swaggerUiOptions) => 
             swaggerUiOptions.InjectOnCompleteJavaScript(Constants.Route + Constants.Js);
-        }
 
         /// <summary>
         /// Use this to enable bearer token in user interface.
@@ -51,11 +47,18 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <param name="swaggerGenOptions">
         /// The swagger User Interface Config
         /// </param>
-        public static void EnableBearerTokenAuthorization(this SwaggerGenOptions swaggerGenOptions)
-        {
+        public static void EnableBearerTokenAuthorization(this SwaggerGenOptions swaggerGenOptions) =>
             swaggerGenOptions.AddSecurityDefinition("api_key", new BearerTokenScheme());
+
+        /// <summary>
+        /// Use this to enabled the AuthorizationFilter that hides unauthorized endpoints for the consumer.
+        /// </summary>
+        /// <param name="swaggerGenOptions">
+        /// The swagger User Interface Config
+        ///</param>
+        public static void EnabledAuthorizationFilter(this SwaggerGenOptions swaggerGenOptions) => 
             swaggerGenOptions.DocumentFilter<SwaggerAuthorizationFilter>();
-        }
+        
 
         /// <summary>
         /// Adds the Swagger Gen and also enables Bearer Token security definition with authorization filter
