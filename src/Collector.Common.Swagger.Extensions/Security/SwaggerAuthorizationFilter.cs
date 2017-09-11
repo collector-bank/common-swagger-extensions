@@ -43,13 +43,16 @@ namespace Collector.Common.Swagger.Extensions.Security
 
                 if (!hideAction)
                 {
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.delete));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.get));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.head));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.options));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.patch));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.post));
-                    usedDefinitions.AddRange(GettAllDefinitionsFrom(path.put));
+                    switch (description.HttpMethod.Method)
+                    {
+                        case "DELETE": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.delete)); break;
+                        case "GET": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.get)); break;
+                        case "HEAD": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.head)); break;
+                        case "OPTIONS": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.options)); break;
+                        case "PATCH": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.patch)); break;
+                        case "POST": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.post)); break;
+                        case "PUT": usedDefinitions.AddRange(GettAllDefinitionsFrom(path.put)); break;
+                    }
 
                     continue;
                 }
