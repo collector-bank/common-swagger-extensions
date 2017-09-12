@@ -1,7 +1,8 @@
 ﻿(function () {
     var domCache = {
         apiKeyInput: $('#input_apiKey'),
-        exploreButton: $('#explore')
+        exploreButton: $('#explore'),
+        exploreForm: $('#api_selector')
     };
 
     function addBearerTokenAuthorization() {
@@ -10,12 +11,17 @@
         var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("Authorization", "Bearer " + key, "header");
         window.swaggerUi.api.clientAuthorizations.add("bearer", apiKeyAuth);
         window.swaggerUi.api.clientAuthorizations.remove("key");
+        window.swaggerUi.api.clientAuthorizations.remove("api_key");
         domCache.apiKeyInput.attr('placeholder', 'Put bearer token here');
     }
 
     addBearerTokenAuthorization();
 
-    domCache.exploreButton.click(function() {
+    domCache.exploreButton.click(function () {
+        addBearerTokenAuthorization();
+    });
+
+    domCache.exploreForm.submit(function () {
         addBearerTokenAuthorization();
     });
 })();
