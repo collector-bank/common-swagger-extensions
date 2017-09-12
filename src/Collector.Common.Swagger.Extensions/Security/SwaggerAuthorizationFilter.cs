@@ -25,9 +25,9 @@ namespace Collector.Common.Swagger.Extensions.Security
                 var route = "/" + description.Route.RouteTemplate.TrimEnd('/');
                 var path = swaggerDoc.paths[route];
 
-                var hideAction = _showAction?.Invoke(description) ?? false;
+                var showCurrentAction = _showAction?.Invoke(description) ?? false;
 
-                if (!hideAction)
+                if (showCurrentAction)
                 {
                     switch (description.HttpMethod.Method)
                     {
