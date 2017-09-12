@@ -1,7 +1,8 @@
 ﻿(function () {
     var domCache = {
         apiKeyInput: $('#input_apiKey'),
-        exploreButton: $('#explore')
+        exploreButton: $('#explore'),
+        exploreForm: $('#api_selector')
     };
 
     function addBearerTokenAuthorization() {
@@ -15,7 +16,11 @@
 
     addBearerTokenAuthorization();
 
-    domCache.exploreButton.click(function() {
+    domCache.exploreButton.click(function () {
+        addBearerTokenAuthorization();
+    });
+
+    domCache.exploreForm.submit(function () {
         addBearerTokenAuthorization();
     });
 })();
