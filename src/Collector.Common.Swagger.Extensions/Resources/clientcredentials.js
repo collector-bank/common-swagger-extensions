@@ -1,27 +1,18 @@
 ﻿(function () {
     var domCache = {
         apiKeyInput: $('#input_apiKey'),
-        exploreButton: $('#explore'),
-        exploreForm: $('#api_selector')
+        exploreButton: $('#explore')
     };
 
     function addBearerTokenAuthorization() {
         var key = domCache.apiKeyInput.val();
 
-        var apiKeyAuth = new SwaggerClient.ApiKeyAuthorization("Authorization", "Bearer " + key, "header");
-        window.swaggerUi.api.clientAuthorizations.add("bearer", apiKeyAuth);
-        window.swaggerUi.api.clientAuthorizations.remove("key");
-        window.swaggerUi.api.clientAuthorizations.remove("api_key");
+        var bearerTokenAuth = new SwaggerClient.ApiKeyAuthorization("Authorization", "Bearer " + key, "header");
+        window.swaggerUi.api.clientAuthorizations.add("bearer", bearerTokenAuth);
         domCache.apiKeyInput.attr('placeholder', 'Put bearer token here');
     }
 
     addBearerTokenAuthorization();
 
-    domCache.exploreButton.click(function () {
-        addBearerTokenAuthorization();
-    });
-
-    domCache.exploreForm.submit(function () {
-        addBearerTokenAuthorization();
-    });
+    domCache.apiKeyInput.change(addBearerTokenAuthorization);
 })();
