@@ -66,7 +66,9 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions.Security
                 HideAction(swaggerDoc, description, path, route);
             }
             
-            var removedDefinitions = swaggerDoc.Definitions.Keys.Except(usedDefinitions.Distinct()).ToList();
+            usedDefinitions = IncludeChildDefinitions(swaggerDoc, usedDefinitions).Distinct().ToList();
+            
+            var removedDefinitions = swaggerDoc.Definitions.Keys.Except(usedDefinitions).ToList();
 
             foreach (var removedDefinition in removedDefinitions)
                 swaggerDoc.Definitions.Remove(removedDefinition);
@@ -118,10 +120,51 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions.Security
                                   .Select(x => x.Split('/').LastOrDefault()) ?? Enumerable.Empty<string>());
 
             response.AddRange(item.Responses?
-                                  .Where(x => !string.IsNullOrEmpty(x.Value.Schema?.Ref))
-                                  .Select(x => x.Value.Schema?.Ref.Split('/').LastOrDefault()) ?? Enumerable.Empty<string>());
+                                  .SelectMany(x => GetDefinitionsFrom(x.Value.Schema)) ?? Enumerable.Empty<string>());
 
             return response;
+        }
+        
+        private static IEnumerable<string> IncludeChildDefinitions(SwaggerDocument swaggerDoc, IEnumerable<string> includedDefinitions)
+        {
+            foreach (var definitionName in includedDefinitions)
+            {
+                var definition = swaggerDoc.Definitions.ContainsKey(definitionName)
+                    ? swaggerDoc.Definitions[definitionName]
+                    : null;
+                
+                if(definition == null)
+                    continue;
+
+                yield return definitionName;
+                
+                if(definition.Properties == null)
+                    yield break;
+
+                foreach (var child in definition.Properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
+                {
+                    yield return child;
+                }
+            }
+        }
+
+        private static IEnumerable<string> GetDefinitionsFrom(Schema schema)
+        {
+            if(schema == null)
+                yield break;
+            
+            var reference = (schema.Ref ?? "").Split('/').LastOrDefault();
+
+            if (!string.IsNullOrEmpty(reference))
+                yield return reference;
+            
+            if(schema.Properties == null)
+                yield break;
+
+            foreach (var child in schema.Properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
+            {
+                yield return child;
+            }
         }
 
         private static bool IsPolicyAllowed(

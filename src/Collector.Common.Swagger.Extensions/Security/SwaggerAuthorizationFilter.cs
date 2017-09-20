@@ -46,7 +46,9 @@ namespace Collector.Common.Swagger.Extensions.Security
                 HideAction(swaggerDoc, description, path, route);
             }
 
-            var removedDefinitions = swaggerDoc.definitions.Keys.Except(usedDefinitions.Distinct()).ToList();
+            usedDefinitions = IncludeChildDefinitions(swaggerDoc, usedDefinitions).Distinct().ToList();
+            
+            var removedDefinitions = swaggerDoc.definitions.Keys.Except(usedDefinitions).ToList();
 
             foreach (var removedDefinition in removedDefinitions)
                 swaggerDoc.definitions.Remove(removedDefinition);
@@ -86,7 +88,7 @@ namespace Collector.Common.Swagger.Extensions.Security
                 swaggerDoc.paths.Remove(route);
         }
 
-        private IEnumerable<string> GetAllDefinitionsFrom(Operation item)
+        private static IEnumerable<string> GetAllDefinitionsFrom(Operation item)
         {
             var response = new List<string>();
 
@@ -94,14 +96,54 @@ namespace Collector.Common.Swagger.Extensions.Security
                 return response;
 
             response.AddRange(item.parameters?
-                .Where(x => !string.IsNullOrEmpty(x.schema?.@ref))
-                .Select(x => x.schema.@ref.Split('/').LastOrDefault()) ?? Enumerable.Empty<string>());
+                .SelectMany(x => GetDefinitionsFrom(x.schema)) ?? Enumerable.Empty<string>());
 
             response.AddRange(item.responses?
-                .Where(x => !string.IsNullOrEmpty(x.Value.schema?.@ref))
-                .Select(x => x.Value.schema?.@ref.Split('/').LastOrDefault()) ?? Enumerable.Empty<string>());
+                .SelectMany(x => GetDefinitionsFrom(x.Value.schema)) ?? Enumerable.Empty<string>());
 
             return response;
+        }
+
+        private static IEnumerable<string> IncludeChildDefinitions(SwaggerDocument swaggerDoc, IEnumerable<string> includedDefinitions)
+        {
+            foreach (var definitionName in includedDefinitions)
+            {
+                var definition = swaggerDoc.definitions.ContainsKey(definitionName)
+                    ? swaggerDoc.definitions[definitionName]
+                    : null;
+                
+                if(definition == null)
+                    continue;
+
+                yield return definitionName;
+
+                if(definition.properties == null)
+                    yield break;
+                
+                foreach (var child in definition.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
+                {
+                    yield return child;
+                }
+            }
+        }
+
+        private static IEnumerable<string> GetDefinitionsFrom(Schema schema)
+        {
+            if(schema == null)
+                yield break;
+            
+            var reference = (schema.@ref ?? "").Split('/').LastOrDefault();
+
+            if (!string.IsNullOrEmpty(reference))
+                yield return reference;
+
+            if(schema.properties == null)
+                yield break;
+            
+            foreach (var child in schema.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
+            {
+                yield return child;
+            }
         }
     }
 }
