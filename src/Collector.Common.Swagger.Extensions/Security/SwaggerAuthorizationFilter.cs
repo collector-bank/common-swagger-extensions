@@ -8,8 +8,7 @@ namespace Collector.Common.Swagger.Extensions.Security
 {
     public class SwaggerAuthorizationFilter : IDocumentFilter
     {
-        public static SwaggerAuthorizationFilter CreateWithAuthorizationFilter(Func<ApiDescription, bool> apiFilter) =>
-            new SwaggerAuthorizationFilter(apiFilter);
+        public static SwaggerAuthorizationFilter CreateWithAuthorizationFilter(Func<ApiDescription, bool> apiFilter) => new SwaggerAuthorizationFilter(apiFilter);
 
         private readonly Func<ApiDescription, bool> _showAction;
 
@@ -31,13 +30,27 @@ namespace Collector.Common.Swagger.Extensions.Security
                 {
                     switch (description.HttpMethod.Method)
                     {
-                        case "DELETE": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.delete)); break;
-                        case "GET": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.get)); break;
-                        case "HEAD": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.head)); break;
-                        case "OPTIONS": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.options)); break;
-                        case "PATCH": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.patch)); break;
-                        case "POST": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.post)); break;
-                        case "PUT": usedDefinitions.AddRange(GetAllDefinitionsFrom(path.put)); break;
+                        case "DELETE":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.delete));
+                            break;
+                        case "GET":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.get));
+                            break;
+                        case "HEAD":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.head));
+                            break;
+                        case "OPTIONS":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.options));
+                            break;
+                        case "PATCH":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.patch));
+                            break;
+                        case "POST":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.post));
+                            break;
+                        case "PUT":
+                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.put));
+                            break;
                     }
 
                     continue;
@@ -47,7 +60,7 @@ namespace Collector.Common.Swagger.Extensions.Security
             }
 
             usedDefinitions = IncludeChildDefinitions(swaggerDoc, usedDefinitions).Distinct().ToList();
-            
+
             var removedDefinitions = swaggerDoc.definitions.Keys.Except(usedDefinitions).ToList();
 
             foreach (var removedDefinition in removedDefinitions)
@@ -96,10 +109,10 @@ namespace Collector.Common.Swagger.Extensions.Security
                 return response;
 
             response.AddRange(item.parameters?
-                .SelectMany(x => GetDefinitionsFrom(x.schema)) ?? Enumerable.Empty<string>());
+                                  .SelectMany(x => GetDefinitionsFrom(x.schema)) ?? Enumerable.Empty<string>());
 
             response.AddRange(item.responses?
-                .SelectMany(x => GetDefinitionsFrom(x.Value.schema)) ?? Enumerable.Empty<string>());
+                                  .SelectMany(x => GetDefinitionsFrom(x.Value.schema)) ?? Enumerable.Empty<string>());
 
             return response;
         }
@@ -111,15 +124,15 @@ namespace Collector.Common.Swagger.Extensions.Security
                 var definition = swaggerDoc.definitions.ContainsKey(definitionName)
                     ? swaggerDoc.definitions[definitionName]
                     : null;
-                
-                if(definition == null)
+
+                if (definition == null)
                     continue;
 
                 yield return definitionName;
 
-                if(definition.properties == null)
+                if (definition.properties == null)
                     yield break;
-                
+
                 foreach (var child in definition.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
                 {
                     yield return child;
@@ -129,17 +142,17 @@ namespace Collector.Common.Swagger.Extensions.Security
 
         private static IEnumerable<string> GetDefinitionsFrom(Schema schema)
         {
-            if(schema == null)
+            if (schema == null)
                 yield break;
-            
+
             var reference = (schema.@ref ?? "").Split('/').LastOrDefault();
 
             if (!string.IsNullOrEmpty(reference))
                 yield return reference;
 
-            if(schema.properties == null)
+            if (schema.properties == null)
                 yield break;
-            
+
             foreach (var child in schema.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
             {
                 yield return child;
