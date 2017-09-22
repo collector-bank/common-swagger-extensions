@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http.Description;
 using Swashbuckle.Swagger;
@@ -16,8 +15,6 @@ namespace Collector.Common.Swagger.Extensions.Security
 
         public void Apply(SwaggerDocument swaggerDoc, SchemaRegistry schemaRegistry, IApiExplorer apiExplorer)
         {
-            var usedDefinitions = new List<string>();
-
             var descriptions = apiExplorer.ApiDescriptions;
             foreach (var description in descriptions)
             {
@@ -26,45 +23,14 @@ namespace Collector.Common.Swagger.Extensions.Security
 
                 var showCurrentAction = _showAction?.Invoke(description) ?? false;
 
-                if (showCurrentAction)
-                {
-                    switch (description.HttpMethod.Method)
-                    {
-                        case "DELETE":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.delete));
-                            break;
-                        case "GET":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.get));
-                            break;
-                        case "HEAD":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.head));
-                            break;
-                        case "OPTIONS":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.options));
-                            break;
-                        case "PATCH":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.patch));
-                            break;
-                        case "POST":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.post));
-                            break;
-                        case "PUT":
-                            usedDefinitions.AddRange(GetAllDefinitionsFrom(path.put));
-                            break;
-                    }
-
-                    continue;
-                }
-
-                HideAction(swaggerDoc, description, path, route);
+                if(!showCurrentAction)
+                    HideAction(swaggerDoc, description, path, route);
             }
 
-            usedDefinitions = IncludeChildDefinitions(swaggerDoc, usedDefinitions).Distinct().ToList();
-
-            var removedDefinitions = swaggerDoc.definitions.Keys.Except(usedDefinitions).ToList();
-
-            foreach (var removedDefinition in removedDefinitions)
-                swaggerDoc.definitions.Remove(removedDefinition);
+            if (!swaggerDoc.paths.Any())
+            {
+                swaggerDoc.definitions.Clear();
+            }
         }
 
         private static void HideAction(SwaggerDocument swaggerDoc, ApiDescription description, PathItem path, string route)
@@ -99,64 +65,6 @@ namespace Collector.Common.Swagger.Extensions.Security
                 path.head == null && path.options == null &&
                 path.patch == null && path.post == null && path.put == null)
                 swaggerDoc.paths.Remove(route);
-        }
-
-        private static IEnumerable<string> GetAllDefinitionsFrom(Operation item)
-        {
-            var response = new List<string>();
-
-            if (item == null)
-                return response;
-
-            response.AddRange(item.parameters?
-                                  .SelectMany(x => GetDefinitionsFrom(x.schema)) ?? Enumerable.Empty<string>());
-
-            response.AddRange(item.responses?
-                                  .SelectMany(x => GetDefinitionsFrom(x.Value.schema)) ?? Enumerable.Empty<string>());
-
-            return response;
-        }
-
-        private static IEnumerable<string> IncludeChildDefinitions(SwaggerDocument swaggerDoc, IEnumerable<string> includedDefinitions)
-        {
-            foreach (var definitionName in includedDefinitions)
-            {
-                var definition = swaggerDoc.definitions.ContainsKey(definitionName)
-                    ? swaggerDoc.definitions[definitionName]
-                    : null;
-
-                if (definition == null)
-                    continue;
-
-                yield return definitionName;
-
-                if (definition.properties == null)
-                    yield break;
-
-                foreach (var child in definition.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
-                {
-                    yield return child;
-                }
-            }
-        }
-
-        private static IEnumerable<string> GetDefinitionsFrom(Schema schema)
-        {
-            if (schema == null)
-                yield break;
-
-            var reference = (schema.@ref ?? "").Split('/').LastOrDefault();
-
-            if (!string.IsNullOrEmpty(reference))
-                yield return reference;
-
-            if (schema.properties == null)
-                yield break;
-
-            foreach (var child in schema.properties.SelectMany(x => GetDefinitionsFrom(x.Value)))
-            {
-                yield return child;
-            }
         }
     }
 }
