@@ -13,6 +13,7 @@ using Collector.Common.Swagger.AspNetCore.Extensions.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -68,10 +69,7 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions
         /// <returns></returns>
         public static IServiceCollection AddSwaggerGenWithBearerToken(this IServiceCollection services, Action<SwaggerGenOptions> setupAction)
         {
-            if (services.All(x => x.ImplementationType != typeof(IHttpContextAccessor)))
-            {
-                services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-            }
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSwaggerGen(options =>
             {
                 setupAction.Invoke(options);
