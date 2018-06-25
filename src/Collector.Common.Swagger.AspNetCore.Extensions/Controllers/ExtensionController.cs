@@ -39,6 +39,10 @@ namespace Collector.Common.Swagger.AspNetCore.Extensions.Controllers
         /// <returns></returns>
         [HttpGet("/swagger/images/favicon-32x32.png")]
         [HttpGet("/swagger/images/favicon-16x16.png")]
+        [HttpGet("/swagger/favicon-32x32.png")]
+        [HttpGet("/swagger/favicon-16x16.png")]
+        [HttpGet("/images/favicon-32x32.png")]
+        [HttpGet("/images/favicon-16x16.png")]
         public IActionResult GetFavicon()
         {
             return GetImage("Resources.favicon.png");
